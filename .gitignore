@@ -1,0 +1,6 @@
+**/venv
+**/*ravdess-data
+**/*cache*
+**/*info*
+mic*.wav
+!*example.wav
