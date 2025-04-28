@@ -15,40 +15,44 @@ def wait_for_file(file_path, timeout=10):
     return False
 
 def main():
-    print("🎙️ Welcome to Emotion Predictor + Audio Clusterizer 🎙️")
-    print("Choose input method:")
-    print("1. Record and Predict Emotion from Mic")
-    print("2. Clusterize WAV files from data/for_transcription/ Folder")
-    
-    choice = input("Enter your choice (1/2): ")
+    while True:
+        print("🎙️ Welcome to Emotion Predictor + Audio Clusterizer 🎙️")
+        print("Choose input method:")
+        print("1. Record and Predict Emotion from Mic")
+        print("2. Clusterize WAV files from data/for_transcription/ Folder")
+        print("0. Quit")
+        
+        choice = input("Enter your choice (1/2): ")
 
-    if choice == "1":
-        # Option 1: Record and Predict Emotion from Mic
-        mic_audio_path = record_from_mic()
-        if mic_audio_path:
-            files = [mic_audio_path]
-            batch_transcribe(files)
-            batch_predict_emotion(files)
-        else:
-            print("❗ No audio recorded. Please try again.")
-
-    elif choice == "2":
-        # Option 2: Clusterize WAV files (or transcriptions)
-        files = load_wav_files()
-        if len(files)>2:
-            transcription_file = batch_transcribe(files)
-            if wait_for_file("data/processed/audio_transcription/"+transcription_file):
-                clusterize_transcriptions()
+        if choice == "1":
+            # Option 1: Record and Predict Emotion from Mic
+            mic_audio_path = record_from_mic()
+            if mic_audio_path:
+                files = [mic_audio_path]
+                batch_transcribe(files)
+                batch_predict_emotion(files)
             else:
-                print("❗ Timeout while waiting for transcription file.")
-        elif len(files) == 1:
-            print("There's only 1 WAV File.. I don't think you need to cluster that :D")
+                print("❗ No audio recorded. Please try again.")
+
+        elif choice == "2":
+            # Option 2: Clusterize WAV files (or transcriptions)
+            files = load_wav_files()
+            if len(files)>2:
+                transcription_file = batch_transcribe(files)
+                if wait_for_file("data/processed/audio_transcription/"+transcription_file):
+                    clusterize_transcriptions()
+                else:
+                    print("❗ Timeout while waiting for transcription file.")
+            elif len(files) == 1:
+                print("There's only 1 WAV File.. I don't think you need to cluster that :D")
+            else:
+                print("❗ No WAV file detected. Please try again.")
+        elif choice == "0":
+            break
+        
         else:
-            print("❗ No WAV file detected. Please try again.")
-            
-    else:
-        print("❌ Invalid choice. Please run the program again and select 1 or 2.")
-        return
+            print("❌ Invalid choice. Please run the program again and select 1 or 2.")
+            return
 
 if __name__ == "__main__":
     main()

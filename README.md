@@ -78,7 +78,6 @@ To clusterize WAV files (including transcriptions):
 
 - Choose option `2` when prompted.
 - The program will look for WAV files in the `data/for_transcriptions/` folder.
-- **Important**: If you want to include your mic recordings in this process, **you must move the recordings from `data/mic_recordings/` to `data/for_transcriptions/` manually**.
 
 Once the WAV files are in the correct folder, the program will process the transcriptions and perform clustering using K-Means. The clustering results will be displayed visually.
 
@@ -94,7 +93,8 @@ If you choose to cluster WAV files, the program will:
 
 - Ensure that you have enough WAV files in the `data/for_transcriptions/` folder for clustering (at least 2 files). If there’s only one file, clustering may not be necessary.
 - For transcription, audio files in WAV format are required. Ensure your files are in this format before running the transcription.
-- You can also clusterize your recorded audio files, but currently you have to manually move or copy-paste the recordings from `data/mic_recordings/` to `data/for_transcription/`
+- **IMPORTANT** You can also clusterize your recorded audio files, but currently you have to manually move or copy-paste the recordings from `data/mic_recordings/` to `data/for_transcription/`
+- Also, hopefully in the future I can add model options for the input too :D
 
 ## Example Usage
 

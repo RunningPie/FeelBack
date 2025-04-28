@@ -23,7 +23,6 @@ def extract_datetime(file_name):
     else:
         return -1  # Files that don't match will be considered oldest
 
-# Function to clusterize transcriptions
 def clusterize_transcriptions():
     # Sort files by extracted time
     csv_files_sorted = sorted(csv_files, key=lambda x: extract_datetime(x), reverse=True)
@@ -42,17 +41,15 @@ def clusterize_transcriptions():
     print("Total rows:", len(df))
     print("Sample:\n", df.head())
 
-    # 3. Drop Duplicate Transcriptions
     unique_df = df.drop_duplicates(subset=["transcription"])
     texts = unique_df["transcription"].values
     print(f"Unique transcriptions: {len(texts)}")
 
-    # 4. Vectorize Text using TF-IDF
+    # Vectorize Text using TF-IDF
     vectorizer = TfidfVectorizer(stop_words="english")
     X = vectorizer.fit_transform(texts)
     print("Vectorized shape:", X.shape)
 
-    # 5. Find Best K with Elbow Method
     inertia = []
 
     # Test K from 1 to unique//2 because in unique//2 each cluster would
@@ -68,7 +65,7 @@ def clusterize_transcriptions():
     # Handle case where inertia is too small for a meaningful elbow
     if len(inertia) < 2:
         print("Not enough unique transcriptions for meaningful clustering. Skipping elbow method.")
-        k_optimal = 1  # Default to 1 cluster or handle accordingly
+        k_optimal = 1  # Default to 1 cluster
     else:
         # Plot the Elbow
         plt.figure(figsize=(8,6))
@@ -85,16 +82,15 @@ def clusterize_transcriptions():
 
     print(f"Suggested optimal number of clusters: {k_optimal}")
 
-    # 7. Apply KMeans with Optimal K
+    # Apply KMeans with Optimal K
     kmeans = KMeans(n_clusters=k_optimal, random_state=42, n_init=10)
     kmeans.fit(X)
     unique_df["cluster"] = kmeans.labels_
 
-    # 8. Reduce Dimensions for Visualization
     pca = PCA(n_components=2, random_state=42)
     reduced = pca.fit_transform(X.toarray())
 
-    # 9. Visualize Clusters
+    # Visualize Clusters
     plt.figure(figsize=(8,6))
     for i in range(k_optimal):
         points = reduced[unique_df['cluster'] == i]
@@ -107,7 +103,6 @@ def clusterize_transcriptions():
     plt.tight_layout()
     plt.show()
 
-    # 10. Optional: Print example sentences per cluster
     print("\nExample sentences by cluster:")
     for i in range(k_optimal):
         print(f"\n--- Cluster {i} ---")

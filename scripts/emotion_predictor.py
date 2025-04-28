@@ -8,7 +8,6 @@ import pandas as pd
 import os
 import soundfile as sf
 
-# Load your emotion classification model
 model = joblib.load("models/emotion_model-Apr_25-17h_03m.pkl")
 
 def extract_features(file_name, mfcc=True, chroma=True, mel=True):
@@ -18,7 +17,7 @@ def extract_features(file_name, mfcc=True, chroma=True, mel=True):
         X = sound_file.read(dtype="float32")
         sample_rate = sound_file.samplerate
         
-        result = np.array([])  # Initialize an empty array to store features
+        result = np.array([])
 
         # Compute Chroma features
         if chroma:
@@ -54,7 +53,7 @@ def batch_predict_emotion(file_paths):
     
     print(f"Prediction results, your voice sounds: {prediction}")
     
-    # Save predictions if needed
+    # Save predictions
     if predictions:
         df = pd.DataFrame(predictions)
         output_filename = f"data/processed/emotion_predictions/emotion_prediction-{pd.Timestamp.now().strftime('%b_%d-%Hh_%Mm')}.csv"
